@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrowseBuddy Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <!-- Onboarding Modal -->
+  <div class="modal-overlay" id="onboardingModal" style="display: none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Welcome to BrowseBuddy!</h2>
+        <p>Your pixel pet companion is ready to browse with you.</p>
+      </div>
+      <div class="modal-body">
+        <div class="onboarding-pet">
+          <canvas id="onboardingPetCanvas" width="32" height="32"></canvas>
+        </div>
+        <div class="onboarding-features">
+          <div class="feature-item">
+            <span class="feature-icon">🐾</span>
+            <div>
+              <strong>Context-Aware Pet</strong>
+              <p>Your buddy reacts to what you browse — shopping, coding, sports, and more!</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">💰</span>
+            <div>
+              <strong>Earn Cashback</strong>
+              <p>Get BuddyCoins when shopping at supported stores. Redeem for rewards!</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🔒</span>
+            <div>
+              <strong>Privacy First</strong>
+              <p>All detection happens locally. No browsing data is sent to any server.</p>
+            </div>
+          </div>
+        </div>
+        <div class="onboarding-consent">
+          <h3>Choose what BrowseBuddy can do:</h3>
+          <label class="toggle-row">
+            <span>Browsing context detection (for pet reactions)</span>
+            <input type="checkbox" id="onb_contextDetection" checked>
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-row">
+            <span>Shopping affiliate suggestions</span>
+            <input type="checkbox" id="onb_affiliateSuggestions" checked>
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-row">
+            <span>Search query analysis</span>
+            <input type="checkbox" id="onb_searchQueryAnalysis">
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-row">
+            <span>Browsing history sync</span>
+            <input type="checkbox" id="onb_browsingHistorySync">
+            <span class="toggle-switch"></span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn primary" id="onboardingDone">Let's Go!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Options Page -->
+  <div class="options-container">
+    <div class="options-header">
+      <span class="header-logo">🐾</span>
+      <h1>BrowseBuddy Settings</h1>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="general">General</button>
+      <button class="tab" data-tab="privacy">Privacy</button>
+      <button class="tab" data-tab="customize">Customize</button>
+      <button class="tab" data-tab="redeem">Rewards</button>
+      <button class="tab" data-tab="about">About</button>
+    </div>
+
+    <!-- General Tab -->
+    <div class="tab-content active" id="tab-general">
+      <div class="card">
+        <h2>Pet Settings</h2>
+        <label class="toggle-row">
+          <span>Show pet on pages</span>
+          <input type="checkbox" id="opt_petVisible" checked>
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-row">
+          <span>Enable sound effects</span>
+          <input type="checkbox" id="opt_soundEnabled">
+          <span class="toggle-switch"></span>
+        </label>
+        <div class="form-row">
+          <label for="opt_petName">Pet name</label>
+          <input type="text" id="opt_petName" class="text-input" value="Buddy" maxlength="20">
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Detection</h2>
+        <label class="toggle-row">
+          <span>Browsing context detection</span>
+          <input type="checkbox" id="opt_contextDetection" checked>
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-row">
+          <span>Shopping affiliate suggestions</span>
+          <input type="checkbox" id="opt_affiliateSuggestions" checked>
+          <span class="toggle-switch"></span>
+        </label>
+        <label class="toggle-row">
+          <span>Search query analysis</span>
+          <input type="checkbox" id="opt_searchQueryAnalysis">
+          <span class="toggle-switch"></span>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>Special</h2>
+        <div class="form-row">
+          <label for="opt_birthday">Your birthday (for surprises!)</label>
+          <input type="date" id="opt_birthday" class="text-input">
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Tab -->
+    <div class="tab-content" id="tab-privacy">
+      <div class="card">
+        <h2>Privacy Dashboard</h2>
+        <p class="card-desc">All detection happens locally in your browser. No browsing data is ever sent to external servers.</p>
+
+        <div class="privacy-section">
+          <h3>Categories detected today</h3>
+          <div class="tag-list" id="privacyCategories">
+            <span class="tag">Loading...</span>
+          </div>
+        </div>
+
+        <div class="privacy-section">
+          <h3>Affiliate impressions today</h3>
+          <div id="privacyAffiliate" class="privacy-log">
+            <p class="muted">Loading...</p>
+          </div>
+        </div>
+
+        <div class="privacy-section">
+          <h3>Stored events</h3>
+          <p class="muted" id="privacyEventCount">0 events stored locally</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Data Management</h2>
+        <button class="btn danger" id="btnClearAnalytics">Clear Analytics Data</button>
+        <button class="btn danger" id="btnClearAll">Clear All Data & Reset</button>
+        <p class="card-desc" style="margin-top: 8px;">Clearing all data will reset your coins, streak, and pet progress.</p>
+      </div>
+    </div>
+
+    <!-- Customize Tab -->
+    <div class="tab-content" id="tab-customize">
+      <div class="card">
+        <h2>Pet Skins</h2>
+        <p class="card-desc">More skins unlocking soon! Earn BuddyCoins to unlock premium looks.</p>
+        <div class="skin-grid">
+          <div class="skin-item active" data-skin="default">
+            <canvas class="skin-preview" width="32" height="32" data-skin-render="default"></canvas>
+            <span>Default</span>
+          </div>
+          <div class="skin-item locked" data-skin="golden">
+            <canvas class="skin-preview" width="32" height="32" data-skin-render="golden"></canvas>
+            <span>Golden (500 coins)</span>
+          </div>
+          <div class="skin-item locked" data-skin="ice">
+            <canvas class="skin-preview" width="32" height="32" data-skin-render="ice"></canvas>
+            <span>Ice (300 coins)</span>
+          </div>
+          <div class="skin-item locked" data-skin="fire">
+            <canvas class="skin-preview" width="32" height="32" data-skin-render="fire"></canvas>
+            <span>Fire (400 coins)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Position</h2>
+        <button class="btn" id="btnResetPosition">Reset Pet Position to Default</button>
+      </div>
+    </div>
+
+    <!-- Rewards Tab -->
+    <div class="tab-content" id="tab-redeem">
+      <div class="card">
+        <h2>Your Balance</h2>
+        <div class="balance-display">
+          <span class="balance-amount" id="redeemBalance">0</span>
+          <span class="balance-label">BuddyCoins</span>
+        </div>
+        <p class="card-desc">1 BuddyCoin = $0.01 USD</p>
+      </div>
+
+      <div class="card">
+        <h2>Redeem Options</h2>
+        <p class="card-desc">Redemption coming in Phase 2! Keep earning coins.</p>
+        <div class="redeem-options">
+          <div class="redeem-item">
+            <span class="redeem-icon">🎁</span>
+            <div>
+              <strong>Gift Cards</strong>
+              <p>Min. 500 coins ($5)</p>
+            </div>
+            <button class="btn" disabled>Coming Soon</button>
+          </div>
+          <div class="redeem-item">
+            <span class="redeem-icon">💵</span>
+            <div>
+              <strong>PayPal Transfer</strong>
+              <p>Min. 1000 coins ($10)</p>
+            </div>
+            <button class="btn" disabled>Coming Soon</button>
+          </div>
+          <div class="redeem-item">
+            <span class="redeem-icon">❤️</span>
+            <div>
+              <strong>Donate to Charity</strong>
+              <p>Any amount</p>
+            </div>
+            <button class="btn" disabled>Coming Soon</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Referral Program</h2>
+        <p class="card-desc">Share your code with friends! Earn 50 coins per referral.</p>
+        <div class="referral-box">
+          <span class="referral-code" id="referralCode">BB-LOADING</span>
+          <button class="btn" id="btnCopyReferral">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Tab -->
+    <div class="tab-content" id="tab-about">
+      <div class="card">
+        <h2>About BrowseBuddy</h2>
+        <p class="card-desc">
+          BrowseBuddy is a pixel pet that lives in your browser. It reacts to what you browse,
+          helps you find deals with cashback, and keeps you company across the web.
+        </p>
+        <div class="about-info">
+          <p><strong>Version:</strong> 1.0.0</p>
+          <p><strong>Permissions used:</strong></p>
+          <ul>
+            <li><strong>activeTab / tabs:</strong> To detect page context and incognito mode</li>
+            <li><strong>storage:</strong> To save your pet state, coins, and preferences</li>
+            <li><strong>alarms:</strong> For streak tracking and periodic tasks</li>
+            <li><strong>notifications:</strong> For streak reminders and level-up alerts</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Privacy Policy</h2>
+        <p class="card-desc">
+          BrowseBuddy respects your privacy:
+        </p>
+        <ul class="privacy-list">
+          <li>All browsing detection is performed locally in your browser</li>
+          <li>No browsing data, URLs, or page content is sent to any server</li>
+          <li>No personal information is collected</li>
+          <li>Only affiliate conversion events are recorded (for reward crediting)</li>
+          <li>You can view and clear all stored data anytime in the Privacy tab</li>
+          <li>Extension works fully offline after installation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

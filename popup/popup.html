@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrowseBuddy</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <div class="popup-header">
+      <span class="popup-logo">🐾</span>
+      <h1>BrowseBuddy</h1>
+    </div>
+
+    <!-- Pet Card -->
+    <div class="pet-card">
+      <div class="pet-preview">
+        <canvas id="petCanvas" width="32" height="32"></canvas>
+      </div>
+      <div class="pet-info">
+        <div class="pet-name" id="petName">Buddy</div>
+        <div class="pet-level" id="petLevel">Level 1</div>
+        <div class="pet-title" id="petTitle">Newborn Pixel</div>
+        <div class="xp-bar">
+          <div class="xp-fill" id="xpFill" style="width: 0%"></div>
+        </div>
+        <div class="xp-text" id="xpText">0 / 100 XP</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-icon">💰</span>
+        <span class="stat-value" id="coinBalance">0</span>
+        <span class="stat-label">BuddyCoins</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">🔥</span>
+        <span class="stat-value" id="streakCount">0</span>
+        <span class="stat-label">Day Streak</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">📊</span>
+        <span class="stat-value" id="weekCoins">+0</span>
+        <span class="stat-label">This Week</span>
+      </div>
+    </div>
+
+    <!-- Active Deals -->
+    <div class="section">
+      <div class="section-header">
+        <span>🛍️ Active Deals</span>
+        <span class="deal-count" id="dealCount">0</span>
+      </div>
+      <div class="deals-list" id="dealsList"></div>
+    </div>
+
+    <!-- Current Context -->
+    <div class="section">
+      <div class="section-header">
+        <span>🎯 Current Mood</span>
+      </div>
+      <div class="context-display" id="contextDisplay">
+        <span class="context-emoji">😊</span>
+        <span class="context-text">Idle</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button class="action-btn" id="btnCustomize" title="Customize Pet">
+        <span>🎨</span> Customize
+      </button>
+      <button class="action-btn" id="btnShare" title="Share BrowseBuddy">
+        <span>📤</span> Share
+      </button>
+    </div>
+
+    <div class="actions">
+      <button class="action-btn primary" id="btnRedeem">
+        🎁 Redeem Rewards
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="popup-footer">
+      <button class="footer-link" id="btnSettings">⚙️ Settings</button>
+      <button class="footer-link" id="btnPrivacy">🔒 Privacy</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

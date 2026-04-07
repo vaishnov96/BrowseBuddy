@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrowseBuddy — Your Friendly Browsing Companion</title>
+  <meta name="description" content="BrowseBuddy is a free Chrome extension that adds a friendly pixel-art dog to your browser. It reads pages, sets timers, plays games, and keeps you company while you browse.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fafafa;
+      --text: #1a1a2e;
+      --text-muted: #555;
+      --accent: #4a6cf7;
+      --accent-soft: #e8edff;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 24px;
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+    }
+    nav a.nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    nav a.nav-link:hover { color: var(--text); }
+
+    /* HERO */
+    .hero {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 24px 60px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .cta-btn:hover { background: #3b5de7; transform: translateY(-1px); }
+    .cta-secondary {
+      display: inline-block;
+      margin-left: 12px;
+      color: var(--text-muted);
+      font-size: 14px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .cta-secondary:hover { color: var(--text); }
+
+    /* PREVIEW */
+    .preview {
+      max-width: 720px;
+      margin: 40px auto 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    .preview-bar {
+      background: #f3f4f6;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .preview-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .preview-dot:nth-child(1) { background: #ef4444; }
+    .preview-dot:nth-child(2) { background: #f59e0b; }
+    .preview-dot:nth-child(3) { background: #22c55e; }
+    .preview-body {
+      padding: 40px;
+      text-align: center;
+      background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .preview-pet {
+      font-size: 72px;
+      margin-bottom: 16px;
+      animation: pet-bounce 2s ease-in-out infinite;
+    }
+    @keyframes pet-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .preview-bubble {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 10px 18px;
+      border-radius: 16px 16px 16px 4px;
+      font-size: 14px;
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    /* FEATURES */
+    .features {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+    .features h2 {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .features .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 16px;
+      margin-bottom: 48px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      transition: box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* HOW IT WORKS */
+    .how-it-works {
+      background: var(--card-bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px;
+    }
+    .how-it-works .inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .how-it-works h2 {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 48px;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 32px;
+      text-align: center;
+    }
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+    .steps h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .steps p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* PRIVACY */
+    .privacy-section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .privacy-section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .privacy-section .subtitle {
+      color: var(--text-muted);
+      font-size: 16px;
+      margin-bottom: 36px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .privacy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      text-align: left;
+    }
+    .privacy-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .privacy-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #dcfce7;
+      color: #16a34a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .privacy-item p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .privacy-item strong {
+      color: var(--text);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    footer p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    footer a {
+      color: var(--text-muted);
+      text-decoration: underline;
+    }
+    footer a:hover { color: var(--text); }
+
+    /* MOBILE */
+    @media (max-width: 600px) {
+      .hero { padding: 48px 20px 40px; }
+      .features, .privacy-section { padding: 48px 20px; }
+      .how-it-works { padding: 48px 20px; }
+      .preview-body { padding: 24px; min-height: 200px; }
+      .cta-secondary { display: block; margin: 12px 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="logo"><span class="logo-dot"></span> BrowseBuddy</a>
+    <div>
+      <a href="#features" class="nav-link" style="margin-right: 20px;">Features</a>
+      <a href="#privacy" class="nav-link">Privacy</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <span class="hero-badge">Free Chrome Extension</span>
+    <h1>A little companion for<br>your browser</h1>
+    <p>BrowseBuddy is a pixel-art dog that lives in your browser tab. It reads pages for you, helps you stay focused, plays mini-games, and keeps you company while you browse.</p>
+    <a href="#" class="cta-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      Add to Chrome
+    </a>
+    <a href="#features" class="cta-secondary">See what it does</a>
+
+    <div class="preview">
+      <div class="preview-bar">
+        <span class="preview-dot"></span>
+        <span class="preview-dot"></span>
+        <span class="preview-dot"></span>
+      </div>
+      <div class="preview-body">
+        <div class="preview-pet">🐕</div>
+        <div class="preview-bubble">Good morning! You're reading an article on TechCrunch. About 3 min read.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <h2>What BrowseBuddy does</h2>
+    <p class="subtitle">A small set of useful features that stay out of your way until you need them.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📖</div>
+        <h3>Page Summaries</h3>
+        <p>Automatically reads the page you're on and gives you a quick summary — what it's about, how long it is, and what to expect.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⏱</div>
+        <h3>Focus Timer</h3>
+        <p>Set a Pomodoro-style timer right from the pet menu. A floating badge tracks your time so you can stay focused.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎮</div>
+        <h3>Mini Games</h3>
+        <p>Take a break with a quick coin-catch game. Earn BuddyCoins and XP to level up your pet and unlock new things.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Context Aware</h3>
+        <p>BrowseBuddy knows if you're watching YouTube, shopping, coding, or reading news — and reacts naturally to what you're doing.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🐾</div>
+        <h3>Teach Tricks</h3>
+        <p>Teach your buddy to sit, shake, roll over, and more. Unlock new tricks as your pet levels up through daily interaction.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3>Screenshot Buddy</h3>
+        <p>Capture a screenshot of any page with one click. Your buddy adds a quick camera flash for fun.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <div class="inner">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div>
+          <div class="step-num">1</div>
+          <h3>Install the extension</h3>
+          <p>Add BrowseBuddy from the Chrome Web Store. Takes about 5 seconds.</p>
+        </div>
+        <div>
+          <div class="step-num">2</div>
+          <h3>Browse normally</h3>
+          <p>Your pixel buddy appears in the corner of every page. It walks around and reacts to what you're doing.</p>
+        </div>
+        <div>
+          <div class="step-num">3</div>
+          <h3>Interact when you want</h3>
+          <p>Click the pet to open the menu. Set timers, play games, read page summaries, or just say hi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="privacy-section" id="privacy">
+    <h2>Built with privacy in mind</h2>
+    <p class="subtitle">BrowseBuddy runs entirely in your browser. Your data stays on your device.</p>
+    <div class="privacy-grid">
+      <div class="privacy-item">
+        <div class="privacy-check">&#10003;</div>
+        <p><strong>No data collection.</strong> We don't track your browsing history or send it anywhere.</p>
+      </div>
+      <div class="privacy-item">
+        <div class="privacy-check">&#10003;</div>
+        <p><strong>No accounts required.</strong> Install and use immediately — no sign-up, no login.</p>
+      </div>
+      <div class="privacy-item">
+        <div class="privacy-check">&#10003;</div>
+        <p><strong>Runs locally.</strong> Page reading, timers, and games all run on your machine.</p>
+      </div>
+      <div class="privacy-item">
+        <div class="privacy-check">&#10003;</div>
+        <p><strong>Open and transparent.</strong> No hidden background processes or external requests.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 BrowseBuddy &middot; <a href="privacy.html">Privacy Policy</a></p>
+  </footer>
+
+</body>
+</html>

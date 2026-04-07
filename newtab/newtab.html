@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Tab — BrowseBuddy</title>
+  <link rel="stylesheet" href="newtab.css">
+</head>
+<body>
+  <div class="newtab-container">
+    <!-- Greeting -->
+    <div class="greeting" id="greeting">Good morning!</div>
+    <div class="time" id="currentTime">12:00</div>
+    <div class="date" id="currentDate">Monday, January 1</div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search the web..." autocomplete="off" autofocus>
+      <button class="search-btn" id="searchBtn">🔍</button>
+    </div>
+
+    <!-- Pet Section -->
+    <div class="pet-section">
+      <canvas id="newtabPetCanvas" width="32" height="32"></canvas>
+      <div class="pet-speech" id="petSpeech"></div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-num" id="statCoins">0</span>
+        <span class="stat-lbl">BuddyCoins</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="statStreak">0</span>
+        <span class="stat-lbl">Day Streak</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="statLevel">1</span>
+        <span class="stat-lbl">Level</span>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="quick-links" id="quickLinks">
+      <a href="https://mail.google.com" class="quick-link" title="Gmail">📧</a>
+      <a href="https://youtube.com" class="quick-link" title="YouTube">▶️</a>
+      <a href="https://github.com" class="quick-link" title="GitHub">🐙</a>
+      <a href="https://twitter.com" class="quick-link" title="Twitter">🐦</a>
+      <a href="https://reddit.com" class="quick-link" title="Reddit">🤖</a>
+      <a href="https://amazon.com" class="quick-link" title="Amazon">🛒</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="newtab-footer">
+      <span>BrowseBuddy v1.0</span>
+      <span>•</span>
+      <a href="#" id="openDashboard">Dashboard</a>
+    </div>
+  </div>
+
+  <script src="newtab.js"></script>
+</body>
+</html>
