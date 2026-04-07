@@ -10,10 +10,7 @@
     "alarms",
     "notifications"
   ],
-  "optional_permissions": [
-    "history",
-    "bookmarks"
-  ],
+  "optional_permissions": [],
   "host_permissions": [
     "https://*.amazon.com/*",
     "https://*.flipkart.com/*",
