@@ -3,6 +3,8 @@
  * Handles affiliate link injection, cashback tracking, and deal detection
  */
 const BuddyAffiliate = (() => {
+  // Only include retailers with verified affiliate tags
+  // Add more as you sign up for their programs
   const AFFILIATE_CONFIG = {
     'amazon.com': {
       paramName: 'tag',
@@ -21,42 +23,6 @@ const BuddyAffiliate = (() => {
       tagValue: 'browsebuddy05-20',
       cashbackPercent: 3,
       name: 'Amazon UK'
-    },
-    'flipkart.com': {
-      paramName: 'affid',
-      tagValue: 'browsebuddy',
-      cashbackPercent: 4,
-      name: 'Flipkart'
-    },
-    'ebay.com': {
-      paramName: 'mkcid',
-      tagValue: 'browsebuddy',
-      cashbackPercent: 2,
-      name: 'eBay'
-    },
-    'walmart.com': {
-      paramName: 'wmlspartner',
-      tagValue: 'browsebuddy',
-      cashbackPercent: 2,
-      name: 'Walmart'
-    },
-    'etsy.com': {
-      paramName: 'ref',
-      tagValue: 'browsebuddy',
-      cashbackPercent: 4,
-      name: 'Etsy'
-    },
-    'bestbuy.com': {
-      paramName: 'ref',
-      tagValue: 'browsebuddy',
-      cashbackPercent: 2,
-      name: 'Best Buy'
-    },
-    'target.com': {
-      paramName: 'ref',
-      tagValue: 'browsebuddy',
-      cashbackPercent: 2,
-      name: 'Target'
     }
   };
 
