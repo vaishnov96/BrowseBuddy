@@ -6,19 +6,19 @@ const BuddyAffiliate = (() => {
   const AFFILIATE_CONFIG = {
     'amazon.com': {
       paramName: 'tag',
-      tagValue: 'browsebuddy-20',
+      tagValue: 'browsebuddy05-20',
       cashbackPercent: 3,
       name: 'Amazon'
     },
     'amazon.in': {
       paramName: 'tag',
-      tagValue: 'browsebuddy-21',
+      tagValue: 'browsebuddy05-20',
       cashbackPercent: 3,
       name: 'Amazon India'
     },
     'amazon.co.uk': {
       paramName: 'tag',
-      tagValue: 'browsebuddy-21',
+      tagValue: 'browsebuddy05-20',
       cashbackPercent: 3,
       name: 'Amazon UK'
     },
