@@ -650,6 +650,116 @@
 .bb-trick-perform { background: rgba(107, 203, 119, 0.3); }
 .bb-trick-perform:hover { background: rgba(107, 203, 119, 0.5); }
 
+/* === SHOPPING ASSISTANT === */
+.bb-shopping-panel {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 260px;
+  background: rgba(20, 20, 35, 0.95);
+  border-radius: 14px;
+  padding: 14px;
+  opacity: 0;
+  transform: translateY(8px) scale(0.95);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+  z-index: 10002;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.bb-shopping-panel.bb-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.bb-shopping-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.bb-shopping-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 12px;
+  color: #ddd;
+  line-height: 1.4;
+}
+.bb-shopping-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.bb-shopping-savings {
+  color: #6fcf7c;
+  font-weight: 600;
+}
+.bb-shopping-deal {
+  color: #ff9e43;
+  font-weight: 600;
+}
+.bb-shopping-coupon {
+  color: #7dd3fc;
+  font-weight: 600;
+}
+.bb-shopping-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.bb-shopping-chip {
+  background: rgba(255,255,255,0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  color: #ccc;
+}
+
+/* === AMAZON SUGGESTION === */
+.bb-amazon-suggest {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  background: rgba(20, 20, 35, 0.95);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  z-index: 10002;
+}
+.bb-amazon-suggest.bb-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.bb-amazon-link {
+  color: #ffa41c;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.bb-amazon-link:hover {
+  color: #ffb84d;
+  text-decoration: underline;
+}
+.bb-amazon-dismiss {
+  color: #888;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+}
+.bb-amazon-dismiss:hover { color: #fff; }
+
 /* === QUICK TIMER === */
 .bb-timer-panel {
   position: absolute;

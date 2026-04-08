@@ -4,26 +4,23 @@
  */
 const BuddyAffiliate = (() => {
   // Only include retailers with verified affiliate tags
-  // Add more as you sign up for their programs
+  // Amazon Associates tag works across all regional domains
   const AFFILIATE_CONFIG = {
-    'amazon.com': {
-      paramName: 'tag',
-      tagValue: 'browsebuddy05-20',
-      cashbackPercent: 3,
-      name: 'Amazon'
-    },
-    'amazon.in': {
-      paramName: 'tag',
-      tagValue: 'browsebuddy05-20',
-      cashbackPercent: 3,
-      name: 'Amazon India'
-    },
-    'amazon.co.uk': {
-      paramName: 'tag',
-      tagValue: 'browsebuddy05-20',
-      cashbackPercent: 3,
-      name: 'Amazon UK'
-    }
+    'amazon.com': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon' },
+    'amazon.in': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon India' },
+    'amazon.co.uk': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon UK' },
+    'amazon.sg': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon SG' },
+    'amazon.ca': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon CA' },
+    'amazon.de': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon DE' },
+    'amazon.fr': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon FR' },
+    'amazon.co.jp': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon JP' },
+    'amazon.com.au': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon AU' },
+    'amazon.com.br': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon BR' },
+    // Southeast Asia — sign up for these programs and replace placeholder tags
+    'lazada.sg': { paramName: 'aff_id', tagValue: 'REPLACE_WITH_LAZADA_ID', cashbackPercent: 5, name: 'Lazada SG', active: false },
+    'lazada.com.my': { paramName: 'aff_id', tagValue: 'REPLACE_WITH_LAZADA_ID', cashbackPercent: 5, name: 'Lazada MY', active: false },
+    'shopee.sg': { paramName: 'af_id', tagValue: 'REPLACE_WITH_SHOPEE_ID', cashbackPercent: 4, name: 'Shopee SG', active: false },
+    'shopee.com.my': { paramName: 'af_id', tagValue: 'REPLACE_WITH_SHOPEE_ID', cashbackPercent: 4, name: 'Shopee MY', active: false }
   };
 
   let _currentRetailer = null;
@@ -33,6 +30,8 @@ const BuddyAffiliate = (() => {
   function getRetailerForHostname(hostname) {
     hostname = hostname.replace(/^www\./, '');
     for (const [domain, config] of Object.entries(AFFILIATE_CONFIG)) {
+      // Skip retailers not yet activated (no real affiliate ID)
+      if (config.active === false) continue;
       if (hostname === domain || hostname.endsWith('.' + domain)) {
         return { domain, ...config };
       }
@@ -125,11 +124,14 @@ const BuddyAffiliate = (() => {
 
     _affiliateActive = true;
 
-    // Inject affiliate tag into current URL if it's a product page
+    // Inject affiliate tag — only redirect on product pages (where purchases happen)
+    // On other pages (homepage, search), just tag the links users click
     if (isProductPage()) {
-      const newUrl = injectAffiliateTag(window.location.href, _currentRetailer);
-      if (newUrl !== window.location.href) {
-        window.history.replaceState(null, '', newUrl);
+      const currentUrl = new URL(window.location.href);
+      if (!currentUrl.searchParams.has(_currentRetailer.paramName)) {
+        currentUrl.searchParams.set(_currentRetailer.paramName, _currentRetailer.tagValue);
+        window.location.replace(currentUrl.toString());
+        return; // Page will reload with tag
       }
     }
 
