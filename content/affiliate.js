@@ -1,26 +1,30 @@
 /**
  * BrowseBuddy — Affiliate Engine
  * Handles affiliate link injection, cashback tracking, and deal detection
+ * Supports two tracking types:
+ *   - 'direct': URL parameter injection (Amazon Associates)
+ *   - 'involve_asia': Redirect-based deeplink tracking (Shopee, Lazada via Involve Asia)
  */
 const BuddyAffiliate = (() => {
-  // Only include retailers with verified affiliate tags
-  // Amazon Associates tag works across all regional domains
+  const INVOLVE_ASIA_BASE = 'https://invl.me/';
+
   const AFFILIATE_CONFIG = {
-    'amazon.com': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon' },
-    'amazon.in': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon India' },
-    'amazon.co.uk': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon UK' },
-    'amazon.sg': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon SG' },
-    'amazon.ca': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon CA' },
-    'amazon.de': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon DE' },
-    'amazon.fr': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon FR' },
-    'amazon.co.jp': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon JP' },
-    'amazon.com.au': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon AU' },
-    'amazon.com.br': { paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon BR' },
-    // Southeast Asia — sign up for these programs and replace placeholder tags
-    'lazada.sg': { paramName: 'aff_id', tagValue: 'REPLACE_WITH_LAZADA_ID', cashbackPercent: 5, name: 'Lazada SG', active: false },
-    'lazada.com.my': { paramName: 'aff_id', tagValue: 'REPLACE_WITH_LAZADA_ID', cashbackPercent: 5, name: 'Lazada MY', active: false },
-    'shopee.sg': { paramName: 'af_id', tagValue: 'REPLACE_WITH_SHOPEE_ID', cashbackPercent: 4, name: 'Shopee SG', active: false },
-    'shopee.com.my': { paramName: 'af_id', tagValue: 'REPLACE_WITH_SHOPEE_ID', cashbackPercent: 4, name: 'Shopee MY', active: false }
+    // Amazon — direct tag injection
+    'amazon.com': { type: 'direct', paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon' },
+    'amazon.in': { type: 'direct', paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon India' },
+    'amazon.co.uk': { type: 'direct', paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon UK' },
+    'amazon.sg': { type: 'direct', paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon SG' },
+    'amazon.ca': { type: 'direct', paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon CA' },
+    'amazon.de': { type: 'direct', paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon DE' },
+    'amazon.fr': { type: 'direct', paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon FR' },
+    'amazon.co.jp': { type: 'direct', paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon JP' },
+    'amazon.com.au': { type: 'direct', paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon AU' },
+    'amazon.com.br': { type: 'direct', paramName: 'tag', tagValue: 'browsebuddy05-20', cashbackPercent: 3, name: 'Amazon BR' },
+    // Shopee — Involve Asia deeplink tracking
+    'shopee.sg': { type: 'involve_asia', deeplink: 'clndq5z', cashbackPercent: 4, name: 'Shopee SG' },
+    // Lazada — pending Involve Asia approval
+    'lazada.sg': { type: 'involve_asia', deeplink: 'PENDING', cashbackPercent: 1, name: 'Lazada SG', active: false },
+    'lazada.com.my': { type: 'involve_asia', deeplink: 'PENDING', cashbackPercent: 1, name: 'Lazada MY', active: false }
   };
 
   let _currentRetailer = null;
@@ -30,7 +34,6 @@ const BuddyAffiliate = (() => {
   function getRetailerForHostname(hostname) {
     hostname = hostname.replace(/^www\./, '');
     for (const [domain, config] of Object.entries(AFFILIATE_CONFIG)) {
-      // Skip retailers not yet activated (no real affiliate ID)
       if (config.active === false) continue;
       if (hostname === domain || hostname.endsWith('.' + domain)) {
         return { domain, ...config };
@@ -39,15 +42,35 @@ const BuddyAffiliate = (() => {
     return null;
   }
 
+  // Build Involve Asia tracking URL for a given destination
+  function buildInvolveAsiaUrl(destinationUrl, deeplink) {
+    return INVOLVE_ASIA_BASE + deeplink + '?url=' + encodeURIComponent(destinationUrl);
+  }
+
+  // Check if we already redirected through Involve Asia this session
+  function hasBeenTracked(domain) {
+    try {
+      return sessionStorage.getItem('bb_ia_' + domain) === '1';
+    } catch { return false; }
+  }
+
+  function markAsTracked(domain) {
+    try {
+      sessionStorage.setItem('bb_ia_' + domain, '1');
+    } catch { /* private browsing */ }
+  }
+
   function injectAffiliateTag(url, retailer) {
     if (!retailer) return url;
 
     try {
+      if (retailer.type === 'involve_asia') {
+        return buildInvolveAsiaUrl(url, retailer.deeplink);
+      }
+
+      // Direct type (Amazon)
       const urlObj = new URL(url);
-
-      // Don't override existing affiliate tags
       if (urlObj.searchParams.has(retailer.paramName)) return url;
-
       urlObj.searchParams.set(retailer.paramName, retailer.tagValue);
 
       BuddyAnalytics.track('affiliate_impression', {
@@ -81,6 +104,9 @@ const BuddyAffiliate = (() => {
 
   function scanAndInjectLinks() {
     if (!_currentRetailer) return;
+
+    // For Involve Asia retailers, don't inject into on-page links (tracking is via redirect)
+    if (_currentRetailer.type === 'involve_asia') return;
 
     const links = document.querySelectorAll('a[href]');
     let injected = 0;
@@ -124,19 +150,35 @@ const BuddyAffiliate = (() => {
 
     _affiliateActive = true;
 
-    // Inject affiliate tag — only redirect on product pages (where purchases happen)
-    // On other pages (homepage, search), just tag the links users click
-    if (isProductPage()) {
-      const currentUrl = new URL(window.location.href);
-      if (!currentUrl.searchParams.has(_currentRetailer.paramName)) {
-        currentUrl.searchParams.set(_currentRetailer.paramName, _currentRetailer.tagValue);
-        window.location.replace(currentUrl.toString());
-        return; // Page will reload with tag
-      }
-    }
+    if (_currentRetailer.type === 'involve_asia') {
+      // Involve Asia: one-time redirect through tracking URL (product pages only)
+      if (isProductPage() && !hasBeenTracked(_currentRetailer.domain)) {
+        markAsTracked(_currentRetailer.domain);
+        const trackingUrl = buildInvolveAsiaUrl(window.location.href, _currentRetailer.deeplink);
 
-    // Scan and inject links
-    scanAndInjectLinks();
+        BuddyAnalytics.track('affiliate_redirect', {
+          retailer: _currentRetailer.name,
+          domain: _currentRetailer.domain,
+          type: 'involve_asia'
+        });
+
+        window.location.replace(trackingUrl);
+        return; // Page will redirect through Involve Asia
+      }
+    } else {
+      // Direct (Amazon): inject tag into URL on product pages
+      if (isProductPage()) {
+        const currentUrl = new URL(window.location.href);
+        if (!currentUrl.searchParams.has(_currentRetailer.paramName)) {
+          currentUrl.searchParams.set(_currentRetailer.paramName, _currentRetailer.tagValue);
+          window.location.replace(currentUrl.toString());
+          return;
+        }
+      }
+
+      // Scan and inject links on non-product pages
+      scanAndInjectLinks();
+    }
 
     // Show pet badge
     if (typeof BrowseBuddy !== 'undefined') {
@@ -146,29 +188,32 @@ const BuddyAffiliate = (() => {
         BrowseBuddy.say(`Shop through BrowseBuddy and earn ${_currentRetailer.cashbackPercent}% cashback on ${_currentRetailer.name}!`);
       });
 
-      // Extra excitement on checkout
       if (isCheckoutPage()) {
         BrowseBuddy.say("Checkout time! Your cashback is being tracked!");
       }
     }
 
-    // Re-scan on DOM mutations (for SPAs and dynamic content)
-    const observer = new MutationObserver(() => {
-      scanAndInjectLinks();
-    });
+    // Re-scan on DOM mutations (direct type only)
+    if (_currentRetailer.type !== 'involve_asia') {
+      const observer = new MutationObserver(() => {
+        scanAndInjectLinks();
+      });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    }
   }
 
   function getActiveDeals() {
-    return Object.entries(AFFILIATE_CONFIG).map(([domain, config]) => ({
-      domain,
-      name: config.name,
-      cashbackPercent: config.cashbackPercent
-    }));
+    return Object.entries(AFFILIATE_CONFIG)
+      .filter(([, config]) => config.active !== false)
+      .map(([domain, config]) => ({
+        domain,
+        name: config.name,
+        cashbackPercent: config.cashbackPercent
+      }));
   }
 
   function getCurrentRetailer() {
@@ -186,6 +231,8 @@ const BuddyAffiliate = (() => {
     isActive,
     isProductPage,
     isCheckoutPage,
+    injectAffiliateTag,
+    buildInvolveAsiaUrl,
     AFFILIATE_CONFIG
   };
 })();
