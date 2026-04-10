@@ -1,14 +1,12 @@
 {
   "manifest_version": 3,
   "name": "BrowseBuddy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Your pixel pet companion that reacts to your browsing, finds you deals, and earns you cashback.",
   "permissions": [
     "activeTab",
-    "tabs",
     "storage",
-    "alarms",
-    "notifications"
+    "alarms"
   ],
   "optional_permissions": [],
   "host_permissions": [
@@ -48,9 +46,6 @@
       "48": "assets/icons/icon48.png",
       "128": "assets/icons/icon128.png"
     }
-  },
-  "chrome_url_overrides": {
-    "newtab": "newtab/newtab.html"
   },
   "options_page": "options/options.html",
   "icons": {
