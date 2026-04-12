@@ -377,12 +377,56 @@
       color: var(--text-muted);
       margin-top: 16px;
     }
-    .notify-text a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
+
+    /* EMAIL FORM */
+    .email-form {
+      display: flex;
+      gap: 8px;
+      max-width: 420px;
+      margin: 0 auto;
     }
-    .notify-text a:hover { text-decoration: underline; }
+    .email-form input {
+      flex: 1;
+      padding: 14px 18px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .email-form input:focus {
+      border-color: var(--accent);
+    }
+    .email-form button {
+      padding: 14px 24px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+    .email-form button:hover {
+      background: #3b5de7;
+      transform: translateY(-1px);
+    }
+    .email-form button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .form-msg {
+      font-size: 13px;
+      margin-top: 10px;
+      min-height: 20px;
+    }
+    .form-msg.success { color: #16a34a; }
+    .form-msg.error { color: #ef4444; }
 
     /* PRIVACY */
     .privacy-section {
@@ -491,12 +535,12 @@
     <span class="hero-badge">Coming Soon to Chrome Web Store</span>
     <h1>A little companion for<br>your browser</h1>
     <p>BrowseBuddy is a pixel-art dog that lives in your browser tab. It reads pages, finds deals, plays games, and keeps you company while you browse.</p>
-    <a href="https://github.com/vaishnov96/BrowseBuddy" target="_blank" class="cta-btn" id="cta-add-chrome" onclick="gtag('event', 'cta_click', {event_category: 'engagement', event_label: 'add_to_chrome'});">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-      Get Early Access
-      <span class="coming-soon-tag">Soon</span>
-    </a>
-    <span class="cta-sub">Star the repo to get notified when we launch</span>
+    <div class="email-form" id="hero-form">
+      <input type="email" id="hero-email" placeholder="Enter your email" required>
+      <button type="button" onclick="submitEmail('hero')">Get Early Access</button>
+    </div>
+    <div class="form-msg" id="hero-msg"></div>
+    <span class="cta-sub">Be the first to know when we launch</span>
 
     <div class="hero-gif">
       <img src="assets/buddy-walk.gif" alt="BrowseBuddy walking animation">
@@ -606,10 +650,12 @@
       <p>BrowseBuddy is currently under review on the Chrome Web Store. We're polishing every pixel to make sure your buddy is ready for the real world.</p>
       <div class="progress-bar"><div class="progress-fill"></div></div>
       <div class="progress-text">Almost there — finalizing Chrome Web Store review</div>
-      <a href="https://github.com/vaishnov96/BrowseBuddy" target="_blank" class="cta-btn" onclick="gtag('event', 'cta_click', {event_category: 'engagement', event_label: 'early_access_bottom'});">
-        Get Early Access on GitHub
-      </a>
-      <p class="notify-text">Star the <a href="https://github.com/vaishnov96/BrowseBuddy" target="_blank">GitHub repo</a> to get notified when we launch.</p>
+      <div class="email-form" id="bottom-form">
+        <input type="email" id="bottom-email" placeholder="Enter your email" required>
+        <button type="button" onclick="submitEmail('bottom')">Notify Me</button>
+      </div>
+      <div class="form-msg" id="bottom-msg"></div>
+      <p class="notify-text">We'll only email you once — when BrowseBuddy is ready.</p>
     </div>
   </section>
 
@@ -638,8 +684,70 @@
   </section>
 
   <footer>
-    <p>&copy; 2026 BrowseBuddy &middot; <a href="privacy.html">Privacy Policy</a> &middot; <a href="https://github.com/vaishnov96/BrowseBuddy" target="_blank">GitHub</a></p>
+    <p>&copy; 2026 BrowseBuddy &middot; <a href="privacy.html">Privacy Policy</a></p>
   </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://mlrnxfdpxonizhfqpudg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1scm54ZmRweG9uaXpoZnFwdWRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxOTg0OTEsImV4cCI6MjA4ODc3NDQ5MX0.QICaY5qM0TKQB7Q-uScAr2vPXPsLxaqAz_MEpfCzh54';
+
+    async function submitEmail(location) {
+      const input = document.getElementById(location + '-email');
+      const msg = document.getElementById(location + '-msg');
+      const btn = input.parentElement.querySelector('button');
+      const email = input.value.trim();
+
+      if (!email || !email.includes('@') || !email.includes('.')) {
+        msg.textContent = 'Please enter a valid email address.';
+        msg.className = 'form-msg error';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/browsebuddy_waitlist', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_KEY,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ email: email, source: location + '_form' })
+        });
+
+        if (res.ok) {
+          msg.textContent = "You're on the list! We'll notify you when BrowseBuddy launches.";
+          msg.className = 'form-msg success';
+          input.value = '';
+          btn.textContent = 'Joined!';
+          gtag('event', 'waitlist_signup', { event_category: 'conversion', event_label: location });
+        } else if (res.status === 409) {
+          msg.textContent = "You're already on the list! We'll be in touch soon.";
+          msg.className = 'form-msg success';
+          btn.textContent = 'Already Joined';
+        } else {
+          throw new Error('Server error');
+        }
+      } catch (err) {
+        msg.textContent = 'Something went wrong. Please try again.';
+        msg.className = 'form-msg error';
+        btn.disabled = false;
+        btn.textContent = location === 'hero' ? 'Get Early Access' : 'Notify Me';
+      }
+    }
+
+    // Allow Enter key to submit
+    document.querySelectorAll('.email-form input').forEach(input => {
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          this.parentElement.querySelector('button').click();
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
