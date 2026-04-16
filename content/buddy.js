@@ -22,7 +22,10 @@ const BrowseBuddy = (() => {
         "Psst... wanna see a trick? Click me!",
         "I could've been a real dog. Instead I'm watching you browse.",
         "Your screen time today is... actually, you don't wanna know.",
-        "I just sneezed. In pixels. You didn't even notice."
+        "I just sneezed. In pixels. You didn't even notice.",
+        "You know what's fun? Shopping. Take me to Amazon. I have skills there.",
+        "I can find coupons, track prices, and roast your purchases. Multitalented.",
+        "There are deals happening somewhere and we're HERE? Priorities, bestie."
       ],
       emojis: ['😊', '✨', '💫', '😤', '🐶'],
       accessory: null
@@ -100,7 +103,13 @@ const BrowseBuddy = (() => {
         "Price dropped 12% from last month. You're WELCOME.",
         "Cashback is just free money with extra steps. I love it.",
         "That has 4.5 stars. The other 0.5 are haters.",
-        "You know what goes great with that? Everything else in your cart."
+        "You know what goes great with that? Everything else in your cart.",
+        "I checked the reviews so you don't have to. Spoiler: people love it. BUY.",
+        "Free shipping? That's basically the universe giving you permission.",
+        "Life's short. Add to cart. Worry later.",
+        "You've been looking at this for 5 minutes. That means you want it. CHECKOUT.",
+        "I found cashback on this. That's literally free money back. You HAVE to buy it now.",
+        "Your future self will thank you. Your bank account won't. But that's future-you's problem."
       ],
       emojis: ['🛍️', '💳', '🏷️', '💰', '🤑'],
       accessory: '🛍️'
@@ -171,7 +180,9 @@ const BrowseBuddy = (() => {
         "Your screen time report is gonna be WILD today.",
         "Stop scrolling and go drink water. I'll wait. ... Still waiting.",
         "I'd follow you but I already live in your browser. That's clingy enough.",
-        "You've been doomscrolling for 20 mins. Touch grass. Or pet me. Same thing."
+        "You've been doomscrolling for 20 mins. Touch grass. Or pet me. Same thing.",
+        "Saw something cool in your feed? I bet Amazon has it. Want me to check?",
+        "This scroll session could've been a shopping session. Just saying. I find deals btw."
       ],
       emojis: ['📱', '👍', '❤️', '📸', '🔔', '💀'],
       accessory: '📱'
@@ -239,7 +250,8 @@ const BrowseBuddy = (() => {
         "That plot twist! I gasped! In pixels! That's hard to do!",
         "Streaming and chilling? As the only chill buddy you need, I'm in.",
         "Binge-watching is self-care. I will die on this hill.",
-        "Your taste in shows is *chef's kiss*. If I had lips."
+        "Your taste in shows is *chef's kiss*. If I had lips.",
+        "Watching product reviews? Skip to the buy link. I'll find the deal on Amazon."
       ],
       emojis: ['🍿', '🎬', '📺', '🫠', '😱'],
       accessory: '🍿'

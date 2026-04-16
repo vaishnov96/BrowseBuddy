@@ -485,38 +485,47 @@
     const signals = scrapeUrgencySignals();
     const nudges = [];
 
-    // Social proof — people trust crowds
+    // Social proof — people trust crowds (naughty voice)
     for (const sig of signals) {
       if (sig.type === 'social' && sig.text === 'best_seller') {
-        nudges.push("This is a Best Seller! People clearly love it.");
+        nudges.push("This is literally a Best Seller. Everyone's buying it. You gonna be the one who doesn't? Weird.");
       } else if (sig.type === 'social' && sig.text === 'amazons_choice') {
-        nudges.push("Amazon's Choice — highly rated and well-priced.");
+        nudges.push("Amazon's Choice! Even Amazon is telling you to get this. Who are you to argue with a trillion-dollar company?");
       } else if (sig.type === 'social' && sig.text.includes('bought')) {
-        nudges.push(`${sig.text} — popular pick right now!`);
+        nudges.push(`${sig.text}. That's a LOT of people who didn't overthink it. Just saying.`);
       }
     }
 
-    // Scarcity — fear of missing out
+    // Scarcity — FOMO hits different with sass
     for (const sig of signals) {
       if (sig.type === 'scarcity') {
-        nudges.push(sig.text + " Might want to decide soon.");
+        nudges.push(sig.text + " Clock's ticking bestie. Don't come crying to me when it's gone.");
       }
     }
 
-    // Loss aversion — frame savings as something they'd lose
+    // Loss aversion — make them feel the pain
     if (data.savingsPercent >= 20) {
-      nudges.push(`You'd miss out on saving ${data.currency}${data.savingsAmount} if you don't grab this deal.`);
+      nudges.push(`You're looking at ${data.currency}${data.savingsAmount} OFF right now. Walking away from that is literally throwing money in the trash. Your call.`);
+    } else if (data.savingsPercent >= 10) {
+      nudges.push(`${data.savingsPercent}% off! That's basically the universe telling you to buy it.`);
     }
 
     // Deal urgency
     if (data.dealType === 'limited') {
-      nudges.push("Limited time deal — once it's gone, price goes back up.");
+      nudges.push("Limited time deal! This price is running away faster than my pixels. Grab it before it disappears!");
     }
 
     // High review confidence
     if (data.starRating >= 4.5 && data.reviewCount >= 1000) {
       const count = data.reviewCount >= 1000 ? (data.reviewCount / 1000).toFixed(0) + 'k+' : data.reviewCount;
-      nudges.push(`${count} people gave this 4.5+ stars. That's rare.`);
+      nudges.push(`${count} people rated this 4.5+ stars. That's not a product, that's a movement. Join it.`);
+    } else if (data.starRating >= 4.0 && data.reviewCount >= 500) {
+      nudges.push(`4+ stars from ${data.reviewCount} reviews? That's more reliable than your horoscope. Trust the people.`);
+    }
+
+    // Coupon available
+    if (data.coupons && data.coupons.length > 0) {
+      nudges.push("There's a COUPON sitting right there and you haven't clipped it?! I'm disappointed. Click it. NOW.");
     }
 
     // Pick the best nudge (max 1 per page load to avoid spam)
@@ -600,14 +609,15 @@
       let message;
 
       if (hasTravelIntent && queryLower.match(/luggage|suitcase|travel bag|passport holder/)) {
-        message = `Looking for travel gear? I can check Amazon for "${searchTerms}" — want me to look?`;
+        message = `Travel gear shopping? Say less. I already checked Amazon for "${searchTerms}". You're welcome.`;
       } else if (hasBuyIntent || hasProductWord) {
-        // Vary the suggestion to keep it natural
         const suggestions = [
-          `Searching for "${searchTerms}"? I found some options on Amazon with your cashback.`,
-          `I noticed you're looking at "${searchTerms}". Want to compare prices on Amazon?`,
-          `"${searchTerms}" — want me to check Amazon? You'll earn cashback through me!`,
-          `Shopping for "${searchTerms}"? Amazon might have a better deal.`
+          `You're googling "${searchTerms}" like a peasant. Amazon has it with reviews, deals, AND your cashback. Tap the link.`,
+          `"${searchTerms}" — I found this on Amazon too. Better prices, I get you cashback, everybody wins. Except your wallet.`,
+          `Bestie, stop reading blogs. Amazon has "${searchTerms}" with real reviews and I'll find you a coupon. Click below.`,
+          `I see you looking at "${searchTerms}". Want the Amazon price? Spoiler: it's usually better. And I sniff out coupons.`,
+          `"${searchTerms}" on Amazon = reviews + deals + cashback through me. Google is giving you ads, I'm giving you SAVINGS.`,
+          `Why are you still reading articles? Just check "${searchTerms}" on Amazon. Trust me, I'm a professional shopping dog.`
         ];
         message = suggestions[Math.floor(Math.random() * suggestions.length)];
       } else {
@@ -690,16 +700,55 @@
     detectProductSearch();
   }
 
+  // ====== DEAL WHISPERER ======
+  // Occasionally drops shopping hints on NON-shopping sites to drive traffic
+
+  const DEAL_WHISPERS = [
+    "Psst... your Amazon wishlist is feeling neglected. Just saying.",
+    "You know what would look great on you? Something from your cart. Go check it.",
+    "I haven't sniffed out any deals for you today. Let's fix that. Go browse something.",
+    "Fun fact: I'm a better shopping assistant than any ad you'll see today. Test me.",
+    "Random thought: when was the last time you treated yourself? Amazon's right there...",
+    "I just remembered — I can find coupons, track prices, AND judge your purchases. All for free.",
+    "You've been productive for a while. Reward yourself. You know where. *winks at Amazon*",
+    "Breaking news: there are deals happening RIGHT NOW on Amazon and you're here reading... this.",
+    "My shopping skills are being wasted on this page. Take me somewhere with an Add to Cart button.",
+    "Did you know I can save you money on Amazon? No? Well now you do. You're welcome."
+  ];
+
+  let _lastWhisperTime = 0;
+
+  function maybeWhisper() {
+    // Don't whisper on shopping sites (already active there)
+    if (BuddyAffiliate.isActive()) return;
+
+    // Only whisper once per 30 min session
+    const now = Date.now();
+    if (now - _lastWhisperTime < 30 * 60 * 1000) return;
+
+    // 8% chance per check (checks every 5 mins = ~once per hour on average)
+    if (Math.random() > 0.08) return;
+
+    _lastWhisperTime = now;
+    const whisper = DEAL_WHISPERS[Math.floor(Math.random() * DEAL_WHISPERS.length)];
+    BrowseBuddy.say(whisper);
+
+    try {
+      BuddyAnalytics.track('deal_whisper', { page: window.location.hostname });
+    } catch (e) {}
+  }
+
   // Initial activation — wait for page-summary to finish
   setTimeout(() => {
     autoActivate();
   }, 8000);
 
-  // SPA navigation detection
+  // SPA navigation detection + deal whisperer
   let _urlWatch = setInterval(() => {
     if (window.location.href !== _lastProcessedUrl) {
       setTimeout(autoActivate, 3000);
     }
+    maybeWhisper();
   }, 5000);
 
   window.addEventListener('beforeunload', () => clearInterval(_urlWatch));
