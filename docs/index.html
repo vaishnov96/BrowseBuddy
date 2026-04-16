@@ -532,15 +532,14 @@
 
   <!-- HERO -->
   <section class="hero">
-    <span class="hero-badge">Coming Soon to Chrome Web Store</span>
+    <span class="hero-badge" style="background:#dcfce7;color:#16a34a;">Now Available on Chrome Web Store</span>
     <h1>A little companion for<br>your browser</h1>
     <p>BrowseBuddy is a pixel-art dog that lives in your browser tab. It reads pages, finds deals, plays games, and keeps you company while you browse.</p>
-    <div class="email-form" id="hero-form">
-      <input type="email" id="hero-email" placeholder="Enter your email" required>
-      <button type="button" onclick="submitEmail('hero')">Get Early Access</button>
-    </div>
-    <div class="form-msg" id="hero-msg"></div>
-    <span class="cta-sub">Be the first to know when we launch</span>
+    <a href="https://chromewebstore.google.com/detail/browsebuddy/ocbegboiecbkgnnmplhfpcehhkddmgdd" target="_blank" class="cta-btn" id="cta-add-chrome" onclick="gtag('event', 'cta_click', {event_category: 'engagement', event_label: 'add_to_chrome'});">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      Add to Chrome — Free
+    </a>
+    <span class="cta-sub">Takes 5 seconds. No sign-up needed.</span>
 
     <div class="hero-gif">
       <img src="assets/buddy-walk.gif" alt="BrowseBuddy walking animation">
@@ -646,16 +645,17 @@
   <!-- COMING SOON CTA -->
   <section class="coming-soon">
     <div class="inner">
-      <h2>We're putting the finishing touches</h2>
-      <p>BrowseBuddy is currently under review on the Chrome Web Store. We're polishing every pixel to make sure your buddy is ready for the real world.</p>
-      <div class="progress-bar"><div class="progress-fill"></div></div>
-      <div class="progress-text">Almost there — finalizing Chrome Web Store review</div>
-      <div class="email-form" id="bottom-form">
+      <h2>Ready to meet your new buddy?</h2>
+      <p>BrowseBuddy is free, private, and takes 5 seconds to install. Your pixel companion is waiting for you.</p>
+      <a href="https://chromewebstore.google.com/detail/browsebuddy/ocbegboiecbkgnnmplhfpcehhkddmgdd" target="_blank" class="cta-btn" onclick="gtag('event', 'cta_click', {event_category: 'engagement', event_label: 'add_to_chrome_bottom'});">
+        Add to Chrome — Free
+      </a>
+      <p class="notify-text" style="margin-top:20px;">Want updates on new features?</p>
+      <div class="email-form" id="bottom-form" style="margin-top:12px;">
         <input type="email" id="bottom-email" placeholder="Enter your email" required>
-        <button type="button" onclick="submitEmail('bottom')">Notify Me</button>
+        <button type="button" onclick="submitEmail('bottom')">Subscribe</button>
       </div>
       <div class="form-msg" id="bottom-msg"></div>
-      <p class="notify-text">We'll only email you once — when BrowseBuddy is ready.</p>
     </div>
   </section>
 
