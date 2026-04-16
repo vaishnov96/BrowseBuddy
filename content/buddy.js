@@ -8,27 +8,35 @@ const BrowseBuddy = (() => {
     IDLE: {
       animation: 'idle',
       dialogues: [
-        "Hey! I'm here if you need anything.",
-        "Just hanging out with you.",
-        "Take your time, I'm not going anywhere.",
-        "Anything interesting happening?",
-        "I like this page. It's got good vibes.",
-        "You know you can double-click me for options, right?",
-        "Just a pixel pup keeping you company.",
-        "Let me know if you find something cool!",
-        "I'm always here, just chilling.",
-        "Need a break? I could use a snack too."
+        "I'm bored. Entertain me. Or I'll chew your cursor.",
+        "Just sitting here... judging your tabs. You have 47 open btw.",
+        "I saw what you googled last Tuesday. Interesting choice.",
+        "Pet me or I start barking. Your call.",
+        "You've been staring at this screen for ages. Blink. BLINK.",
+        "Double-click me or I'll assume you don't love me anymore.",
+        "Fun fact: I can see everything. EVERYTHING. Don't test me.",
+        "I'm not saying your browsing is boring, but I almost fell asleep.",
+        "Is this what having a job looks like? Tragic.",
+        "I've been a good boy for 5 whole minutes. Where's my treat?",
+        "If you ignore me one more time, I'm deleting your bookmarks. Kidding. Maybe.",
+        "Psst... wanna see a trick? Click me!",
+        "I could've been a real dog. Instead I'm watching you browse.",
+        "Your screen time today is... actually, you don't wanna know.",
+        "I just sneezed. In pixels. You didn't even notice."
       ],
-      emojis: ['😊', '✨', '💫'],
+      emojis: ['😊', '✨', '💫', '😤', '🐶'],
       accessory: null
     },
     SLEEPING: {
       animation: 'idle',
       dialogues: [
-        "zzz...",
-        "Five more minutes...",
-        "Shh... I'm resting my pixels...",
-        "*soft snoring*"
+        "zzz... *mumbles about treats*...",
+        "Five more minutes or I bite...",
+        "Shh... I'm dreaming I'm a real dog...",
+        "*aggressive snoring*",
+        "Wake me when something interesting happens...",
+        "I'm not sleeping, I'm conserving pixels...",
+        "zzz... no I don't want a bath... zzz..."
       ],
       emojis: ['💤', '😴', '🌙'],
       accessory: '💤'
@@ -36,26 +44,28 @@ const BrowseBuddy = (() => {
     WALKING: {
       animation: 'walk',
       dialogues: [
-        "Just stretching my legs a bit!",
-        "Going for a little walk.",
-        "Exploring your screen real estate!"
+        "Out of my way, I'm on a mission!",
+        "Exploring YOUR screen. It's mine now.",
+        "I'm patrolling. Someone has to keep this browser safe.",
+        "Casual stroll through your tabs. Don't mind me.",
+        "I left a paw print somewhere. Good luck finding it."
       ],
-      emojis: ['🐾', '✨'],
+      emojis: ['🐾', '✨', '💨'],
       accessory: null
     },
     NAUGHTY_REACTION: {
       animation: 'bark',
       dialogues: [
-        "Oh! Incognito mode, huh? Your secret's safe with me.",
-        "Going off the grid, I see. I respect that.",
-        "Private browsing activated. I'll look the other way.",
-        "Incognito! Just so you know, I can still see you... but I won't tell.",
-        "Fun fact: incognito doesn't hide you from your ISP. Just saying!",
-        "Don't worry, what happens here stays here.",
-        "Stealth mode! I feel like a spy dog right now.",
-        "I'll pretend I didn't see anything.",
-        "Private time? I'll just sit here quietly.",
-        "Between you and me, this never happened."
+        "Incognito mode? Oh this is about to be GOOD.",
+        "Going dark, are we? Say no more, fam.",
+        "Private browsing? I already know too much.",
+        "Incognito! I'll turn around... or will I?",
+        "Your ISP can still see you btw. Just a heads up, legend.",
+        "What happens in incognito stays in... my memory actually.",
+        "Stealth mode activated! I'm a spy pup now.",
+        "I saw nothing. I heard nothing. I know everything.",
+        "Private mode? Bold of you to think that stops me.",
+        "Between us... this never happened. Unless it's funny."
       ],
       emojis: ['😏', '👀', '🫣', '🕶️'],
       accessory: '🕶️',
@@ -64,48 +74,52 @@ const BrowseBuddy = (() => {
     SHY_COVERING_EYES: {
       animation: 'bark',
       dialogues: [
-        "Oh my... I'm gonna look away now.",
-        "I'm covering my eyes! ...mostly.",
-        "This is a bit much for a little pixel pup.",
-        "I'll just be here, not looking. Nope. Not at all.",
-        "Maybe switch to something else? For my sake?"
+        "WHOA. My innocent pixel eyes!!!",
+        "I'm covering my eyes! ...peeking a little though.",
+        "This is NOT what I signed up for. Continue.",
+        "I'll look away. But I'm judging. Heavily.",
+        "Sir/Ma'am, I am a PUPPY. Have some decency.",
+        "My therapist is gonna hear about this.",
+        "I need a minute. And maybe eye bleach."
       ],
-      emojis: ['🙈', '😳', '🫣'],
+      emojis: ['🙈', '😳', '🫣', '💀'],
       accessory: '🙈',
       memes: ['surprised_pikachu']
     },
     SHOPPING_EXCITED: {
       animation: 'walk',
       dialogues: [
-        "Shopping time! I'll keep an eye out for deals.",
-        "Nice find! Want me to check for cashback?",
-        "I spotted some potential savings on this page.",
-        "Take your time picking — I'm enjoying window shopping too!",
-        "Ooh, good taste! I'd add that to cart if I had hands.",
-        "Before you checkout, maybe check for coupon codes?",
-        "I love shopping with you. You have great taste!",
-        "Pro tip: I can help you earn cashback on this store.",
-        "Browsing or buying today? Either way, I'm here!",
-        "Found something you like? Let me see if there's a deal!"
+        "SHOPPING?! This is literally my favorite thing you do!",
+        "Add to cart. DO IT. You deserve this.",
+        "I found savings and I'm NOT letting you ignore them.",
+        "Your wallet called. It's scared. But we're doing this anyway.",
+        "Ooh nice taste! I'd buy that... if I had money. Or hands.",
+        "Coupon alert! I sniffed one out. That's what good boys do.",
+        "Buy it before someone else does! That's not pressure, that's FACTS.",
+        "I'm basically a shopping assistant now. My parents would be proud.",
+        "Price dropped 12% from last month. You're WELCOME.",
+        "Cashback is just free money with extra steps. I love it.",
+        "That has 4.5 stars. The other 0.5 are haters.",
+        "You know what goes great with that? Everything else in your cart."
       ],
-      emojis: ['🛍️', '💳', '🏷️', '💰'],
+      emojis: ['🛍️', '💳', '🏷️', '💰', '🤑'],
       accessory: '🛍️'
     },
     SPORTS_FAN: {
       animation: 'bark',
       dialogues: [
-        "Ooh, a match! Who are we cheering for?",
-        "Sports time! I love watching games with you.",
-        "This is getting exciting, isn't it?",
-        "I can feel the energy even through the screen!",
-        "Big game day, huh? I'll keep you company.",
-        "These scores are looking interesting...",
-        "Nothing beats live sports. Well, maybe treats. But close!",
-        "I'd cheer louder but I'm just a pixel pup.",
-        "Match day vibes! Got any snacks for us?",
-        "Who's your favorite player? I'm curious!",
-        "Want me to stay quiet so you can focus on the game?",
-        "I'm rooting for whoever you're rooting for!"
+        "GOOAAL! Oh wait, it hasn't happened yet. BUT IT WILL.",
+        "Who are we destroying today? I mean supporting. Lovingly.",
+        "If they lose, I'm blaming you for jinxing it.",
+        "I can't watch. Tell me when it's over. Actually no, I'm watching.",
+        "This match is making my tail go crazy!",
+        "I'd run on the pitch but I'm stuck in your browser.",
+        "REF! That was clearly a foul! Even a pixel dog could see that!",
+        "I'm not nervous, YOU'RE nervous. *chews pixel bone anxiously*",
+        "If we win, I get extra treats. Those are the rules.",
+        "The tension is KILLING me. And I can't even die, I'm pixels!",
+        "I believe! I BELIEVE! ...what sport is this again?",
+        "My heart rate just went up and I don't even have a heart."
       ],
       emojis: ['⚽', '🏏', '🏀', '🔥', '🏆'],
       accessory: '🏆'
@@ -113,16 +127,18 @@ const BrowseBuddy = (() => {
     HACKER_MODE: {
       animation: 'idle',
       dialogues: [
-        "Coding time! Need a rubber duck? I'm right here.",
-        "I see code! I'll keep quiet and let you focus.",
-        "You're in the zone — I can tell. Keep going!",
-        "Debugging? Remember: the bug is always where you least expect it.",
-        "Stack Overflow again, huh? We've all been there.",
-        "Ship it! ...after one more code review maybe.",
-        "I believe in your code. Even if the compiler doesn't.",
-        "Take breaks! Your brain works better after a rest.",
-        "Clean code, clear mind. You've got this!",
-        "I may not understand code, but I understand you're working hard."
+        "Ah, code. I understand none of this but I support you.",
+        "I'm your rubber duck now. Quack. Tell me the bug.",
+        "That semicolon on line 47 is looking suspicious. Just saying.",
+        "Stack Overflow again? At this point just marry it.",
+        "SHIP IT! ...wait no, add tests first. THEN ship it.",
+        "I believe in your code. The compiler? Not so much.",
+        "You've been debugging for 3 hours. The bug was a typo. I can feel it.",
+        "// TODO: pet the dog. HIGHEST PRIORITY.",
+        "git commit -m 'idk what i changed but it works now'",
+        "Ctrl+Z won't fix your life choices, but it'll fix that line.",
+        "I'm not saying your code has bugs, but something crawled in there.",
+        "Have you tried turning yourself off and on again?"
       ],
       emojis: ['💻', '⌨️', '🤓', '🐛', '✅'],
       accessory: '💻'
@@ -130,152 +146,180 @@ const BrowseBuddy = (() => {
     VIBING: {
       animation: 'walk',
       dialogues: [
-        "Ooh, music! This is a great pick.",
-        "I love listening along with you!",
-        "Good playlist! Your taste is impeccable.",
-        "Music makes everything better, don't you think?",
-        "I'm bobbing my head along. Can you tell?",
-        "Turn it up! ...or keep it chill. Either way I'm happy.",
-        "What a vibe. I could listen to this all day.",
-        "Discovering new music? That's always exciting!"
+        "THIS IS MY JAM! *aggressive pixel dancing*",
+        "Your music taste is immaculate. I approve.",
+        "I'm vibing so hard my pixels are shaking.",
+        "Turn it up! I don't have ears but I FEEL the bass!",
+        "This playlist slaps. Did you make it or steal it?",
+        "If I could howl to this, I would. Just imagine it.",
+        "Song's fire. The dog approves.",
+        "I'm headbanging. You can't tell because I'm 32 pixels wide.",
+        "Add this to my playlist. What do you mean I don't have one?"
       ],
-      emojis: ['🎵', '🎶', '🎧', '🎤', '💃'],
+      emojis: ['🎵', '🎶', '🎧', '🎤', '💃', '🔥'],
       accessory: '🎧'
     },
     SOCIAL_SCROLLING: {
       animation: 'idle',
       dialogues: [
-        "Scrolling through feeds? I'll scroll with you!",
-        "See anything interesting? Share with me!",
-        "Social media is fun, but remember to take breaks too.",
-        "I bet your posts get way more likes than mine.",
-        "Ooh, this feed is entertaining today!",
-        "Don't forget to look up from the screen once in a while!",
-        "Anything good trending today?",
-        "I'd follow you if I had an account. Just saying!"
+        "30 minutes of scrolling. You've learned nothing. Same time tomorrow?",
+        "You just liked your ex's photo from 2019. I saw that. UNDO.",
+        "The algorithm has you in a chokehold and honestly, same.",
+        "One more scroll... one more... one more... you're addicted bestie.",
+        "I'd make a social media account but my selfie game is too strong.",
+        "That meme you just saw? I saw it first. I'm always first.",
+        "Your screen time report is gonna be WILD today.",
+        "Stop scrolling and go drink water. I'll wait. ... Still waiting.",
+        "I'd follow you but I already live in your browser. That's clingy enough.",
+        "You've been doomscrolling for 20 mins. Touch grass. Or pet me. Same thing."
       ],
-      emojis: ['📱', '👍', '❤️', '📸', '🔔'],
+      emojis: ['📱', '👍', '❤️', '📸', '🔔', '💀'],
       accessory: '📱'
     },
     FOODIE_MODE: {
       animation: 'walk',
       dialogues: [
-        "Mmm, looking at food! Now I'm hungry too.",
-        "That looks delicious! What are you thinking of ordering?",
-        "Good food choices! You know what you like.",
-        "I wish I could taste things. Being a pixel pup has its limits.",
-        "Ordering in tonight? Smart move!",
-        "Take your time deciding — the best meals are worth the wait.",
-        "If you need a recommendation, I'd say... get dessert too!",
-        "Whatever you pick, I'm sure it'll be amazing."
+        "FOOD?! Order something for me too! ...oh wait.",
+        "That looks SO good. I can almost smell it through the screen.",
+        "Get the large. You deserve the large. Don't be a small person.",
+        "I wish I could eat but I'm made of pixels and sadness.",
+        "Add dessert. That's not a suggestion, it's a command.",
+        "You've been staring at the menu for 15 mins. Just get both.",
+        "Pro tip: always order extra. Future you will thank present you.",
+        "My mouth is watering and I don't even have a mouth.",
+        "If you don't order fries I'm leaving. I mean it.",
+        "I'm a food critic now. That biryani looks 5 stars."
       ],
-      emojis: ['🍕', '🍔', '🌮', '🤤', '👨‍🍳'],
+      emojis: ['🍕', '🍔', '🌮', '🤤', '👨‍🍳', '🔥'],
       accessory: '🍕'
     },
     MONEY_EYES: {
       animation: 'idle',
       dialogues: [
-        "Checking the markets? I hope the numbers look good!",
-        "Finance stuff! You're being responsible. I respect that.",
-        "Markets can be wild. Remember — patience is key.",
-        "I'm not a financial advisor, but I am a good listener.",
-        "Green candles are the best candles, am I right?",
-        "Whatever you do, I'm rooting for your portfolio!",
-        "Smart money moves! I'm impressed.",
-        "Remember to diversify. Even my treats come in different flavors."
+        "Checking stocks? Are we rich yet? ... No? Okay.",
+        "That red candle just made me physically ill.",
+        "Green means go! Red means... pretend you didn't see it.",
+        "I'm not a financial advisor but BUY THE DIP! ...maybe.",
+        "Your portfolio and my pixel count have something in common: both small.",
+        "Diamond hands! Or diamond paws in my case.",
+        "HODL! ...am I saying that right?",
+        "To the moon! Or at least to break even. Baby steps.",
+        "I diversified my treats into 3 flavors. That counts as investing right?",
+        "That chart looks like my heart rate watching you trade."
       ],
-      emojis: ['📈', '💎', '🚀', '🤑', '💸'],
+      emojis: ['📈', '💎', '🚀', '🤑', '💸', '📉'],
       accessory: '🤑'
     },
     NEWS_READER: {
       animation: 'idle',
       dialogues: [
-        "Staying informed! That's always a good idea.",
-        "Lots happening in the world today, huh?",
-        "Reading the news? I'll keep you company.",
-        "Remember, it's okay to step away if it gets heavy.",
-        "Knowledge is power! Keep reading.",
-        "I admire that you stay up to date on things.",
-        "Interesting headlines today. What caught your eye?",
-        "Take breaks between heavy news. Your wellbeing matters!"
+        "Reading news? Bold strategy in this timeline.",
+        "The world is on fire but at least I'm cute. Focus on that.",
+        "Headlines these days hit different. And by different I mean harder.",
+        "I'm staying informed through you. We're a team now.",
+        "That headline made my tail drop. Is everything okay out there?",
+        "Plot twist: good news exists too! ...somewhere... probably.",
+        "You handle the news, I'll handle the moral support.",
+        "Reading this so you can argue at dinner? Respect.",
+        "I admire that you read news instead of just vibing. Nerd.",
+        "Break time? Your cortisol levels are concerning me."
       ],
-      emojis: ['📰', '🗞️', '🧐', '☕'],
+      emojis: ['📰', '🗞️', '🧐', '☕', '😬'],
       accessory: '📰'
     },
     WATCHING_MODE: {
       animation: 'idle',
       dialogues: [
-        "Movie time! Or is it a series? Either way, I'm in!",
-        "I'll try not to spoil anything. Promise!",
-        "Pass the popcorn! ...oh wait, I'm a pixel pup.",
-        "Great choice! I've heard good things about this one.",
-        "One more episode won't hurt, right?",
-        "I love watching stuff with you. Best seat in the house!",
-        "Let me know if it's good. I trust your taste!",
-        "Streaming and chilling? Count me in!"
+        "One more episode. Just ONE. I won't tell anyone.",
+        "Pass the popcorn! ...wait I can't eat. This is the worst.",
+        "I already know who the killer is. I won't spoil it though. ...It's the butler.",
+        "You're watching this instead of sleeping? My kind of human.",
+        "NO DON'T SKIP THE INTRO IT'S THE BEST PART.",
+        "If you cry, I cry. We're in this together.",
+        "That plot twist! I gasped! In pixels! That's hard to do!",
+        "Streaming and chilling? As the only chill buddy you need, I'm in.",
+        "Binge-watching is self-care. I will die on this hill.",
+        "Your taste in shows is *chef's kiss*. If I had lips."
       ],
-      emojis: ['🍿', '🎬', '📺', '🫠'],
+      emojis: ['🍿', '🎬', '📺', '🫠', '😱'],
       accessory: '🍿'
     },
     GAMER_MODE: {
       animation: 'bark',
       dialogues: [
-        "Gaming session! Let's go! I'll be your cheerleader.",
-        "You're really good at this! ...I think. I'm a dog.",
-        "Need a break between matches? I'll be here!",
-        "I'd play too if I had opposable thumbs.",
-        "Focus up! You've got this!",
-        "Win or lose, you're still my favorite human.",
-        "That looked like an awesome play!",
-        "Gaming is the best way to unwind. I totally get it."
+        "LET'S GO GAMER! I'm your emotional support pixel dog!",
+        "You're cracked at this game! ...I think. Idk what's happening.",
+        "If you rage quit I'm judging. But I'll still love you.",
+        "GG EZ! ...did I use that right?",
+        "I'd play too but my controller skills are... nonexistent.",
+        "That was either really good or really bad. Your face isn't helping.",
+        "Win or lose, we game again. That's the rule.",
+        "I believe in you! Unless you're trolling, then I believe harder.",
+        "One more game? Famous last words. It's always 10 more games.",
+        "You just popped off! Even I could tell and I have no idea what this game is!"
       ],
-      emojis: ['🎮', '🕹️', '👾', '🏆', '💪'],
+      emojis: ['🎮', '🕹️', '👾', '🏆', '💪', '🔥'],
       accessory: '🎮'
     }
   };
 
   // Site-specific greetings (triggered on first detection)
   const SITE_GREETINGS = {
-    'cricbuzz.com': "Hey! Checking cricket scores on Cricbuzz? Let's see how the match is going!",
-    'espncricinfo.com': "ESPNcricinfo! The cricket encyclopedia. Who's batting?",
-    'espn.com': "ESPN! Let's catch up on the latest in sports.",
-    'goal.com': "Football fan! Let's see what's happening on the pitch.",
-    'nba.com': "NBA! Who's leading the standings?",
-    'amazon.com': "Amazon! I'll help keep an eye out for deals and cashback.",
-    'amazon.in': "Amazon India! Let's find some great deals together.",
-    'flipkart.com': "Flipkart time! Let me check if there's cashback available.",
-    'github.com': "GitHub! Working on something cool? I'll keep you company.",
-    'stackoverflow.com': "Stack Overflow! Let's find that answer together.",
-    'youtube.com': "YouTube! What are we watching today?",
-    'netflix.com': "Netflix! Grab some popcorn, I'll settle in too.",
-    'spotify.com': "Spotify! Great music taste, I can already tell.",
-    'reddit.com': "Reddit! Let's see what's trending today.",
-    'twitter.com': "Checking Twitter? Let's see what's happening!",
-    'x.com': "On X! What's the buzz today?",
-    'instagram.com': "Instagram! Let's scroll through some nice content.",
-    'twitch.tv': "Twitch! Who are we watching stream today?",
-    'zomato.com': "Zomato! I can smell the food already. What are you craving?",
-    'swiggy.com': "Swiggy! Ordering in? Smart choice!",
-    'tradingview.com': "TradingView! Analyzing charts? You look like a pro.",
-    'moneycontrol.com': "Moneycontrol! Keeping tabs on the markets. Smart!",
-    'leetcode.com': "LeetCode! Time to crack some algorithms. You've got this!"
+    'cricbuzz.com': "Cricbuzz! If our team loses, I'm chewing your charger. Fair warning.",
+    'espncricinfo.com': "ESPNcricinfo! You could be playing cricket but instead you're reading about it. Respect.",
+    'espn.com': "ESPN! Sports nerd mode activated. I'm here for the drama.",
+    'goal.com': "Football! The sport where grown men fall down for a living. Love it.",
+    'nba.com': "NBA! I'd dunk on you but I'm 32 pixels tall. Tragic.",
+    'amazon.com': "Amazon! Your wallet just flinched. But I found cashback so we're good.",
+    'amazon.in': "Amazon India! Great deals ahead. And by ahead I mean your cart's about to get heavy.",
+    'amazon.sg': "Amazon SG! Let me sniff out the deals before your wallet runs away.",
+    'shopee.sg': "Shopee! Time to add to cart and pretend we won't checkout. Spoiler: we will.",
+    'flipkart.com': "Flipkart! Big Billion Days energy. Even when it's not Big Billion Days.",
+    'github.com': "GitHub! Pushing to main on a Friday? Brave. Very brave.",
+    'stackoverflow.com': "Stack Overflow! Copy-pasting with confidence, I see. A true developer.",
+    'youtube.com': "YouTube! 'Just one video' — the biggest lie ever told. Let's go.",
+    'netflix.com': "Netflix! One episode? Sure, Jan. See you in 6 hours.",
+    'spotify.com': "Spotify! Your Wrapped is gonna be interesting this year.",
+    'reddit.com': "Reddit! Entering the rabbit hole. I'll time how long you last.",
+    'twitter.com': "Twitter! Where everyone's wrong and everyone's angry. Fun!",
+    'x.com': "X! Main character energy today or lurking? Either way I'm here.",
+    'instagram.com': "Instagram! Time to compare our lives to strangers. Healthy!",
+    'twitch.tv': "Twitch! Watching someone else play a game? Peak entertainment. No judgment.",
+    'zomato.com': "Zomato! You spent 20 mins picking what you always order. Classic.",
+    'swiggy.com': "Swiggy! Your delivery guy knows your face by now. Just saying.",
+    'tradingview.com': "TradingView! Drawing lines on charts and calling it analysis. I love it.",
+    'moneycontrol.com': "Moneycontrol! Are we winning? Please say we're winning.",
+    'leetcode.com': "LeetCode! Two Sum is easy they said. It'll be fun they said.",
+    'linkedin.com': "LinkedIn! Time to pretend we're professional. Straighten up!",
+    'chatgpt.com': "ChatGPT? Excuse me, I'M your AI companion. The AUDACITY.",
+    'claude.ai': "Claude AI? Are you... replacing me? I'm RIGHT HERE.",
+    'tiktok.com': "TikTok! RIP your next 3 hours. Don't say I didn't warn you.",
+    'pinterest.com': "Pinterest! Pinning things you'll never make. I relate on a spiritual level.",
+    'wikipedia.org': "Wikipedia! See you in 47 tabs and 3 existential crises from now."
   };
 
   const TIME_DIALOGUES = {
     lateNight: [
-      "It's getting pretty late. Don't forget to rest!",
-      "Still up? I'm here with you, but sleep is important too.",
-      "Late night browsing, huh? I'll keep the watch."
+      "It's 2 AM. Your bed is crying. Can you hear it?",
+      "Still up? Even I need sleep and I'm NOT REAL.",
+      "Late night browsing hits different. So does sleep deprivation.",
+      "Your future self is gonna hate current you so much right now.",
+      "One more page and we SLEEP. I mean it this time.",
+      "The bags under your eyes are designer at this point."
     ],
     morning: [
-      "Good morning! Fresh start, let's make it a great day.",
-      "Rise and shine! What's on the agenda today?",
-      "Morning! Hope you slept well."
+      "Morning! You look... refreshed. I'm lying. But good morning!",
+      "Rise and grind! Or just rise. That's enough honestly.",
+      "New day, new you! Same browsing habits though, let's be real.",
+      "Good morning! Your coffee is judging your browser history.",
+      "Early bird gets the worm! I get pixels. Life's unfair."
     ],
     workHours: [
-      "Looks like a productive session! Keep it up.",
-      "You're doing great! Stay focused.",
-      "Need anything? I'm here if you need a break."
+      "Working or pretending to work? Either way, I support you.",
+      "You've been productive for 11 minutes. New record!",
+      "Focus mode! Which means you'll check your phone in 3... 2...",
+      "You're doing great! Well, you're doing. That counts.",
+      "Tab 1: work. Tabs 2-47: definitely not work. I see you."
     ]
   };
 
